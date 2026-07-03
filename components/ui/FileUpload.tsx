@@ -26,7 +26,6 @@ const FileUpload = ()=> {
             console.log(acceptedFiles);
             const file = acceptedFiles[0]
             if(file.size >10 *1024*1024){
-                //bigger than 10 mb
                 toast.error("File too Large");
                 return
             }
