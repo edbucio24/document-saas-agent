@@ -2,7 +2,7 @@
 import React from  'react'
 import {useDropzone} from 'react-dropzone'
 import {Inbox, Loader2} from 'lucide-react'
-import { uploadToS3 } from '@/lib/db/s3'
+//import { uploadToS3 } from '@/lib/db/s3'
 import { useMutation } from '@tanstack/react-query'
 import axios from 'axios'
 import { toast } from 'react-hot-toast';
@@ -31,7 +31,15 @@ const FileUpload = ()=> {
             }
             try{
                 setUploading(true)
-                const data = await uploadToS3(file)
+
+                const formdata = new FormData();
+                formdata.append('file', file);
+                
+                const response = await axios.post('/api/s3-upload', formdata, {
+                    headers: { 'Content-Type': 'multipart/form-data' }
+                });
+
+                const data = response.data;
                 if(!data?.file_key|| !data.file_name){
                     toast.error("something went wrong")
                     return;
