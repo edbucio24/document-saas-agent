@@ -9,7 +9,7 @@ export const chats = pgTable('Chats', {
     pdfUrl: text('pdf_url').notNull(),
     createdAt: timestamp('created_at').notNull().defaultNow(),
     clerkId: varchar('clerk_id', {length:256}).notNull(),
-    foulKey:text('file_key').notNull()
+    fileKey:text('file_key').notNull()
 
 })
 
