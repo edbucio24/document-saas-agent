@@ -1,9 +1,10 @@
+'use server'
 import AWS from 'aws-sdk'
 export async function uploadToS3(file:File){
     try{
         AWS.config.update({
-            accessKeyId:process.env.NEXT_PUBLIC_S3_ACCESS_KEY_ID,
-            secretAccessKey:process.env.NEXT_PUBLIC_S3_SECRET_ACCESS_KEY
+            accessKeyId:process.env.AWS_ACCESS_KEY_ID,
+            secretAccessKey:process.env.AWS_SECRET_ACCESS_KEY
         });
         const s3 = new AWS.S3({
             params: {
@@ -40,7 +41,7 @@ export async function uploadToS3(file:File){
 
 }
 
-export function getS3Url(file_key:string){
+export async function getS3Url(file_key:string){
     const url = `https://${process.env.NEXT_PUBLIC_S3_BUCKET_NAME}.s3.us-east-2.amazonaws.com/${file_key}`
     return url;
 }
