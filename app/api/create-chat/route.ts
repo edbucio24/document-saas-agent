@@ -1,3 +1,4 @@
+import { loadS3IntoPiencone } from "@/lib/db/pinecone"
 import { NextResponse } from "next/server"
 
 // /api/create-chat
@@ -6,6 +7,7 @@ export async function POST(req:Request, res: Response){
         const body = await req.json()
         const {file_key, file_name} = body
         console.log(file_key,file_name)
+        await loadS3IntoPiencone(file_key)
         return NextResponse.json({message:"success"})
     }catch(error){
         console.log(error)
