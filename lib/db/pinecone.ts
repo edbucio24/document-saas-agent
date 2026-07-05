@@ -4,6 +4,7 @@ import * as fs from 'fs';
 import pdfParse from 'pdf-parse-fork'; 
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
 import { Document } from "@langchain/core/documents";
+import { metadata } from '@/app/layout';
 
 let pinecone: Pinecone | null = null;
 
@@ -21,7 +22,14 @@ export const getPineconeClient = async () => {
     return pinecone;
 };
 
-export async function loadS3IntoPiencone(fileKey: string) {
+    type PDFPage = {
+    pageContent: string,
+    metadata: {
+        loc: {pageNumber: number};
+        };
+    }
+
+ export async function loadS3IntoPiencone(fileKey: string) {
     // 1. Download file from S3
     console.log('downloading s3 into file sysmtem');
     const file_name = await downloadFromS3(fileKey);
@@ -37,13 +45,24 @@ export async function loadS3IntoPiencone(fileKey: string) {
     
     console.log('Successfully extracted PDF text!');
 
+    const pages: PDFPage[] = [
+        {
+            pageContent: parsedPdf.text,
+            metadata:{
+                loc:{pageNumber: 1}
+            }
+        }
+    ];
+
     // 3. Wrap raw text inside a standard LangChain Document object
     const doc = new Document({
-        pageContent: parsedPdf.text,
-        metadata: {
+        pageContent:pages[0].pageContent,
+        metadata:{
             source: file_name,
-            key: fileKey
+            key: fileKey,
+            pageNumber: pages[0].metadata.loc.pageNumber
         }
+        
     });
 
     // 4. Split the text into smaller semantic chunks
@@ -67,8 +86,7 @@ export async function loadS3IntoPiencone(fileKey: string) {
 
     console.log('Pinecone client ready for upserting chunks...');
     
-    // Your next step here will be passing `chunkedDocs` to your embedding model 
-    // and upserting the vectors into `pineconeIndex`.
+    
 
     return chunkedDocs;
 }
