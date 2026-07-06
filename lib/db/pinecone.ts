@@ -5,6 +5,7 @@ import pdfParse from 'pdf-parse-fork';
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
 import { Document } from "@langchain/core/documents";
 import { metadata } from '@/app/layout';
+import { getEmbeddings } from './embeddings';
 
 let pinecone: Pinecone | null = null;
 
@@ -53,6 +54,18 @@ export const getPineconeClient = async () => {
             }
         }
     ];
+
+
+    async function embedDocument(doc:Document){
+        try{
+            const embeddings = await getEmbeddings(doc.pageContent)
+            
+        }catch(error)
+        {
+            console.log('error embedding document',error)
+            throw(error);
+        }
+    }
 
     // 3. Wrap raw text inside a standard LangChain Document object
     const doc = new Document({
