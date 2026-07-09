@@ -9,8 +9,11 @@ export async function getEmbeddings(text: string): Promise<number[]> {
 
     try {
         const response = await ai.models.embedContent({
-            model: 'text-embedding-004',
+            model: 'gemini-embedding-001',
             contents: text,
+            config: {
+                outputDimensionality: 1024
+            }
         });
 
         // 1. Verify the array exists and has the first element
