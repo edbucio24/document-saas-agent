@@ -13,7 +13,7 @@ type Props = {
 
 const ChatSideBar = ({chats,chatId}:Props) =>{
     return(
-        <div className='relative w-full h-screen p-5 text-gray-200 bg-gray-900'>
+        <div className='relative w-full h-screen p-5 text-gray-200 bg-gray-900 flex flex-col'>
             <Link href='/'>
                 <Button className="w-full border-dashed border-white border">
                     <PlusCircle className='mr-2 w-5 h-5'/>
@@ -21,7 +21,7 @@ const ChatSideBar = ({chats,chatId}:Props) =>{
                 </Button>
             </Link>
 
-            <div className='flex flex-col gap-2 mt-5'>
+            <div className='flex flex-col gap-2 mt-5 flex-1 overflow-y-auto'>
                 {chats.map(chat => (
                     <Link key = {chat.id} href = {`/chat/${chat.id}`}>
                         <div className= {
@@ -37,7 +37,7 @@ const ChatSideBar = ({chats,chatId}:Props) =>{
                 ))}
             </div>
 
-                <div className='absolute bottom-5 left-5'>
+                <div className='pt-5'>
                     <div className='flex items-center gap-2 text-sm text-slate-500 flex-wrap'>
                         <Link href = '/'>Home</Link>
                         <Link href = '/'>Source</Link>
