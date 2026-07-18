@@ -6,6 +6,7 @@ import { chats } from '@/lib/db/schema'
 import {eq} from "drizzle-orm"
 import ChatSideBar from '@/components/ui/ChatSideBar'
 import PDFViewer from '@/components/ui/PDFViewer'
+import ChatComponent from '@/components/ui/ChatComponent'
 
 type Props = {
     params: Promise<{
@@ -55,7 +56,7 @@ const ChatPage = async ({params}: Props) =>{
 
                 {/*chat component*/}
                 <div className='flex-[3] border-l-5 border-l-slate-200'>
-
+                    <ChatComponent/>
                 </div>
             </div>
         </div>
