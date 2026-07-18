@@ -3,50 +3,42 @@ import React, { useState } from 'react'
 import { Input } from "@/components/ui/input"
 import { useChat } from '@ai-sdk/react' 
 import { DefaultChatTransport } from 'ai'
+import MessageList from './MessageList'
 
-type Props = {}
+type Props = {
+    chatId: number
+}
 
-const ChatComponent = (props: Props) => {
-    
+const ChatComponent = ({ chatId }: Props) => {
     const [input, setInput] = useState('')
 
-    // 2. useChat now only handles the messages array and the send action
+    // Configure the transport layer to include the chatId in every request
     const { messages, sendMessage } = useChat({
         transport: new DefaultChatTransport({
-            api: '/api/chat', 
+            api: '/api/chat',
+            body: { chatId }, 
         }),
     })
 
-    // 3. Custom form submission handler
     const onSubmit = (e: React.FormEvent) => {
         e.preventDefault()
         if (input.trim()) {
-            sendMessage({ text: input }) // Send it to the AI SDK
-            setInput('') // Clear the text box
+            // sendMessage now only needs the text
+            sendMessage({ text: input })
+            setInput('')
         }
     }
 
     return (
-        
         <div className='relative h-full flex flex-col overflow-hidden'>
-            
             {/* Header */}
             <div className='sticky top-0 inset-x-0 p-4 bg-white border-b'>
                 <h3 className='text-xl font-bold'>Chat</h3>
             </div>
 
             {/* Message List */}
-            <div className='flex-1 overflow-y-auto p-4'>
-                {messages.map((message) => (
-                    <div key={message.id} className={`mb-4 ${message.role === 'user' ? 'text-right' : 'text-left'}`}>
-                        <span className={`p-3 rounded-lg inline-block ${message.role === 'user' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-black'}`}>
-                            {/* Messages are now broken into 'parts' */}
-                            {message.parts?.map((part, index) => (
-                                part.type === 'text' ? <span key={index}>{part.text}</span> : null
-                            ))}
-                        </span>
-                    </div>
-                ))}
+            <div className='flex-1 overflow-y-auto'>
+                <MessageList messages={messages} />
             </div>
 
             {/* Input Form */}
@@ -57,7 +49,6 @@ const ChatComponent = (props: Props) => {
                     placeholder="Ask a question about this PDF..."
                 />
             </form>
-
         </div>
     )
 }
