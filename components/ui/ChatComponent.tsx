@@ -12,8 +12,7 @@ type Props = {
 const ChatComponent = ({ chatId }: Props) => {
     const [input, setInput] = useState('')
 
-    // Configure the transport layer to include the chatId in every request
-    const { messages, sendMessage } = useChat({
+    const { messages, sendMessage, status } = useChat({
         transport: new DefaultChatTransport({
             api: '/api/chat',
             body: { chatId }, 
@@ -23,11 +22,12 @@ const ChatComponent = ({ chatId }: Props) => {
     const onSubmit = (e: React.FormEvent) => {
         e.preventDefault()
         if (input.trim()) {
-            // sendMessage now only needs the text
             sendMessage({ text: input })
             setInput('')
         }
     }
+
+    const isLoading = status === 'submitted' || status === 'streaming'
 
     return (
         <div className='relative h-full flex flex-col overflow-hidden'>
@@ -39,6 +39,18 @@ const ChatComponent = ({ chatId }: Props) => {
             {/* Message List */}
             <div className='flex-1 overflow-y-auto'>
                 <MessageList messages={messages} />
+
+                {/* Thinking indicator: only show while waiting for the first chunk to arrive */}
+                {status === 'submitted' && (
+                    <div className="px-4 py-2 flex items-center gap-2 text-gray-400 italic">
+                        <span className="flex gap-1">
+                            <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce [animation-delay:-0.3s]"></span>
+                            <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
+                            <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce"></span>
+                        </span>
+                        Thinking...
+                    </div>
+                )}
             </div>
 
             {/* Input Form */}
@@ -47,6 +59,7 @@ const ChatComponent = ({ chatId }: Props) => {
                     value={input} 
                     onChange={(e) => setInput(e.target.value)} 
                     placeholder="Ask a question about this PDF..."
+                    disabled={isLoading}
                 />
             </form>
         </div>
