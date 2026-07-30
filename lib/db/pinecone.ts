@@ -104,13 +104,11 @@ export async function loadS3IntoPinecone(fileKey: string) {
         console.log(`Upserting ${vectors.length} vectors to Pinecone...`);
         const upsertBatches = chunkArray(vectors, 100);
 
-        for (const batch of upsertBatches) {
-            await pineconeIndex.upsert({
-                records: batch,
-                namespace: convertToAscii(fileKey)
-            });
-        }
+        const namespace = convertToAscii(fileKey);
 
+        for (const batch of upsertBatches) {
+        await pineconeIndex.namespace(namespace).upsert({ records: batch });
+        }
         return vectors;
     } catch (error) {
         console.error('Pipeline error:', error);

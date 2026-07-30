@@ -18,6 +18,10 @@ export async function getMatchesFromEmbeddings(embeddings:number[],fileKey:strin
         namespace
         });
 
+        console.log('namespace:', namespace);
+        console.log('matches found:', queryResult.matches?.length);
+        console.log('scores:', queryResult.matches?.map(m => m.score));
+
         return queryResult.matches || []
     }catch(error){
         console.log("error querying embeddings", error)
@@ -29,8 +33,7 @@ export async function getContext(query:string, fileKey:string){
     const  queryEmbeddings = await getEmbeddings(query)
     const matches = await getMatchesFromEmbeddings(queryEmbeddings,fileKey)
 
-    const qualifyingDocs = matches.filter(
-        (match) =>match.score && match.score>0.5 );
+    const qualifyingDocs = matches.slice(0, 3); // top 3 matches, regardless of score
 
     type Metadata = {
         text:string,
