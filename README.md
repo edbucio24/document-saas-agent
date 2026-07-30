@@ -87,7 +87,7 @@ User Question -> Embed (Gemini) -> Vector Search (Pinecone) -> Context
 ### Installation
 
 ```bash
-git clone https://github.com/your-username/your-repo.git
+git clone https://github.com/edbucio24/document-saas-agent.git
 cd your-repo
 npm install --legacy-peer-deps
 ```
