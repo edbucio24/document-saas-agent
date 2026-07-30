@@ -27,9 +27,7 @@ const ChatPage = async ({params}: Props) =>{
     }
     const _chats = await db.select().from(chats).where(eq(chats.clerkId,userId))
 
-    // ADD THESE LOGS:
-    console.log("Looking for ID:", parseInt(chat_id));
-    console.log("Available chat IDs:", _chats.map(c => c.id));
+    
 
     if(!_chats){
         return redirect('/')
