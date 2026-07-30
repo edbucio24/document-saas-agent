@@ -6,7 +6,7 @@ import {chats} from "@/lib/db/schema"
 import {eq} from "drizzle-orm"
 import { NextResponse } from 'next/server';
 
-export const runtime = 'edge';
+export const runtime = 'nodejs';
 
 export async function POST(req: Request) {
   try {
@@ -18,8 +18,13 @@ export async function POST(req: Request) {
     }
 
     const fileKey = _chats[0].fileKey
-    const lastMessage = messages[messages.length-1];
-    const context = await getContext(lastMessage.content,fileKey)
+    const lastMessage = messages[messages.length - 1];
+    const lastMessageText = lastMessage.parts
+      .filter((part: any) => part.type === 'text')
+      .map((part: any) => part.text)
+      .join('');
+
+const context = await getContext(lastMessageText, fileKey)
 
      const systemPrompt = {
       role: "system",

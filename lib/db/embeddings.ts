@@ -10,7 +10,7 @@ export async function getEmbeddings(text: string): Promise<number[]> {
     try {
         const response = await ai.models.embedContent({
             model: 'gemini-embedding-001',
-            contents: text,
+            contents: [text],
             config: {
                 outputDimensionality: 1024
             }
