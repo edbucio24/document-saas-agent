@@ -15,7 +15,8 @@ const ChatComponent = ({ chatId }: Props) => {
     const { messages, sendMessage, status } = useChat({
         transport: new DefaultChatTransport({
             api: '/api/chat',
-            body: { chatId }, 
+            body: { 
+                chatId }, 
         }),
     })
 
