@@ -2,7 +2,7 @@
 **Document Saas Agent** is an intelligent, PDF-powered AI chat interface. This application allows users to upload documents and engage in context-aware conversations, leveraging real-time retrieval-augmented generation (RAG) to provide accurate, document-specific insights.
 
 ##  Overview
-Document Saas Agent bridges the gap between static documents and interactive intelligence. By combining advanced vector search with generative AI, it enables users to query their own data seamlessly. Whether you are analyzing long-form reports or extracting specific data points, this tool provides a conversational interface to your PDF files.
+Document Saas Agent bridges the gap between static documents and interactive intelligence. The app uses isolated Pinecone namespaces per document ID to ensure strict tenant and document separation during semantic searches. By combining advanced vector search with generative AI, it enables users to query their own data seamlessly. Whether you are analyzing long-form reports or extracting specific data points, this tool provides a conversational interface to your PDF files.
 
 <img width="1917" height="1017" alt="image" src="https://github.com/user-attachments/assets/34cd1c05-3f1c-426b-93db-91f0e85ea267" />
 
