@@ -74,7 +74,6 @@ User Question -> Embed (Gemini) -> Vector Search (Pinecone) -> Context
 
 ## Getting Started[README.md](https://github.com/user-attachments/files/30566235/README.md)
 
-
 ### Prerequisites
 
 - Node.js 18+
